@@ -1,0 +1,113 @@
+#!/bin/bash
+
+echo "Purging old installation of Tor"
+
+sleep 5
+
+	apt-get purge tor* -y
+
+   wait
+
+	echo "Getting latest Tor..."
+   sleep 3
+	echo "cool"
+   sleep 4
+	wget https://www.torproject.org/dist/tor-0.2.9.10.tar.gz
+
+   wait
+
+	echo "Adding Tor repository to apt sources to update dependencies"
+
+	sudo sh -c 'echo "deb http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list'
+	wait
+	sudo sh -c 'echo "deb-src http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list'
+  wait
+	  sleep 3
+	echo "Importing GPG keys...."
+	  sleep 3
+	gpg --keyserver keys.gnupg.net --recv A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
+  wait
+	  sleep 3
+	echo "Exporting keys to apt"
+	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+	  sleep 3
+	wait
+
+	echo "Updating apt cache"
+	  sleep 3
+	apt-get update
+	wait
+	sleep 3
+
+	echo "Installing tor keychain"
+	   sleep 3
+	apt-get install tor deb.torproject.org-keyring
+	wait
+	echo "Installing ubuntu-core-launcer incase it was removed during purge....."
+	apt-get install ubuntu-core-launcer
+	wait
+	   sleep 3
+	echo "Let's get our deps"
+   sleep 5
+	apt-get build-dep tor -y
+
+   wait
+
+	echo "built deps"
+   sleep 5
+	echo "Extraction time"
+   sleep 4
+
+	tar -xf tor-0.2.9.10.tar.gz
+
+   wait
+	echo "Done"
+   sleep 4
+  echo "Let's build tor now....."
+	  sleep 3
+	echo "Moving into tor directory"
+	  sleep 2
+		cd tor-0.2.9.10
+    wait
+	echo "Done"
+	  sleep 2
+	echo "Configuring"
+	  sleep 2
+		./configure
+   wait
+	echo "Compiling tor....."
+	  sleep 3
+	make -j4
+   wait
+	echo "Installing tor system wide"
+	  sleep 3
+	make install
+   wait
+	echo "tor installed!"
+   sleep 5
+	echo "Creating torrc configuration file"
+	 sleep 5
+	cp /usr/local/etc/tor/torrc.* torrc
+	wait
+	  sleep 3
+	echo "cleaning up remaining files..."
+	rm -rf tor-0*
+	cp ./torgrabber ../
+	cd ..
+	rm -rf tormake
+	echo "Cleanup done..."
+	sleep 5
+	echo "Configuration file needs editing..."
+	  sleep 5
+
+	echo "To run tor, make sure to configure torrc in /usr/local/etc/tor/torrc"
+	  sleep 3
+	echo "then as your normal user (not sudo or root)...run the comman: tor"
+	  sleep 3
+	echo "set the system proxy settings to the SOCKS proxy port you have in your torrc file"
+	  sleep 4
+	echo "google some shit if you are confused"
+	  sleep 4
+	echo "Peace"
+   sleep 5
+exit
