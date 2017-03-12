@@ -1,113 +1,128 @@
 #!/bin/bash
-
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root";
+   sleep 2
+   read -p "Would you like to continue? (y/n): " answer
+  #  echo "Would you like to continue? (y/n)";
+   case $answer in
+   y)
+	  	echo -n "You will be asked to enter your password shortly."
+      echo;
+       sleep 2
+        ;;
+   n)
+	   echo "Well you can't run this script then asshole"
+     exit;
+		 ;;
+     esac
+     wait;
+fi;
 echo "Purging old installation of Tor"
+sleep 3
 
-sleep 5
+	 sudo apt-get purge tor* -y
 
-	apt-get purge tor* -y
-
-   wait
+   wait;
 
 	echo "Getting latest Tor..."
    sleep 3
 	echo "cool"
    sleep 4
-	wget https://www.torproject.org/dist/tor-0.2.9.10.tar.gz
+	  wget https://www.torproject.org/dist/tor-0.2.9.10.tar.gz
 
-   wait
+   wait;
 
 	echo "Adding Tor repository to apt sources to update dependencies"
 
-	sudo sh -c 'echo "deb http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list'
-	wait
-	sudo sh -c 'echo "deb-src http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list'
-  wait
+	 sudo sh -c 'echo "deb http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list'
+	wait;
+	 sudo sh -c 'echo "deb-src http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list'
+  wait;
 	  sleep 3
 	echo "Importing GPG keys...."
 	  sleep 3
-	gpg --keyserver keys.gnupg.net --recv A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
+	   gpg --keyserver keys.gnupg.net --recv A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
   wait
 	  sleep 3
 	echo "Exporting keys to apt"
-	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+	 gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
 	  sleep 3
 	wait
 
 	echo "Updating apt cache"
 	  sleep 3
-	apt-get update
-	wait
+	   sudo apt-get update
+	wait;
 	sleep 3
 
 	echo "Installing tor keychain"
 	   sleep 3
-	apt-get install tor deb.torproject.org-keyring
-	wait
+	    sudo apt-get install tor deb.torproject.org-keyring
+	wait;
 	echo "Installing ubuntu-core-launcer incase it was removed during purge....."
-	apt-get install ubuntu-core-launcer
-	wait
+    sudo apt-get install ubuntu-core-launcer
+	wait;
 	   sleep 3
 	echo "Let's get our deps"
    sleep 5
-	apt-get build-dep tor -y
+	  sudo apt-get build-dep tor -y
 
-   wait
+   wait;
 
 	echo "built deps"
    sleep 5
 	echo "Extraction time"
    sleep 4
 
-	tar -xf tor-0.2.9.10.tar.gz
+	  tar -xf tor-0.2.9.10.tar.gz
 
-   wait
+   wait;
 	echo "Done"
    sleep 4
   echo "Let's build tor now....."
-	  sleep 3
+	 sleep 4
 	echo "Moving into tor directory"
-	  sleep 2
+   sleep 4
 		cd tor-0.2.9.10
-    wait
+    wait;
 	echo "Done"
-	  sleep 2
+	 sleep 4
 	echo "Configuring"
-	  sleep 2
+	 sleep 4
 		./configure
-   wait
+   wait;
 	echo "Compiling tor....."
-	  sleep 3
-	make -j4
-   wait
+	  sleep 4
+	   make -j4
+   wait;
 	echo "Installing tor system wide"
-	  sleep 3
-	make install
-   wait
+	 sleep 4
+	  sudo make install
+   wait;
 	echo "tor installed!"
-   sleep 5
+   sleep 4
+    cd ..
 	echo "Creating torrc configuration file"
-	 sleep 5
-	cp /usr/local/etc/tor/torrc.* torrc
-	wait
+	 sleep 4
+	  sudo cp ./torrc /usr/local/etc/tor/
+	wait;
 	  sleep 3
 	echo "cleaning up remaining files..."
-	rm -rf tor-0*
-	cp ./torgrabber ../
-	cd ..
-	rm -rf tormake
+    cd ..
+      rm -rf tor-0-2.9.10
+  wait;
 	echo "Cleanup done..."
-	sleep 5
+	 sleep 4
 	echo "Configuration file needs editing..."
-	  sleep 5
-
+	 sleep 4
 	echo "To run tor, make sure to configure torrc in /usr/local/etc/tor/torrc"
-	  sleep 3
+	 sleep 4
 	echo "then as your normal user (not sudo or root)...run the comman: tor"
-	  sleep 3
-	echo "set the system proxy settings to the SOCKS proxy port you have in your torrc file"
-	  sleep 4
+	 sleep 8
+	echo "set the system proxy settings to the SOCKS proxy port you have in your torrc file...it is currently set to port 9500"
+	 sleep 8
 	echo "google some shit if you are confused"
-	  sleep 4
+	  sleep 8
 	echo "Peace"
    sleep 5
 exit
