@@ -2,11 +2,11 @@
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root";
    sleep 2
-   read -p "Would you like to continue? (y/n): " answer
+   read -p "Did you run this script as the root user or with the sudo command? (y/n): " answer
   #  echo "Would you like to continue? (y/n)";
    case $answer in
    y)
-	  	echo -n "You will be asked to enter your password shortly."
+	  	echo -n "Great let's move on."
       echo;
        sleep 2
         ;;
@@ -18,13 +18,13 @@ if [ "$(id -u)" != "0" ]; then
      wait;
 fi;
 echo "Purging old installation of Tor"
-sleep 3;
-	 sudo apt-get purge tor* -y;
+sleep 2;
+	 sudo apt-get purge tor -y;
    wait;
-# if [ '$(echo $sudo)' == "Incorrect password please rerun the script."]; then
-#     exit;
-# fi;
-#    wait;
+if [ '$(echo $sudo)' == "Incorrect password please rerun the script."]; then
+    exit;
+fi;
+   wait;
 
 	echo "Getting latest Tor..."
    sleep 3
@@ -65,11 +65,11 @@ sleep 3;
     sudo apt-get install ubuntu-core-launcer
 	wait;
 	   sleep 3
-	echo "Let's get our deps"
-   sleep 5
-	  sudo apt-get build-dep tor -y
-
-   wait;
+	# echo "Let's get our deps"
+  #  sleep 5
+	#   sudo apt-get build-dep tor -y
+  #
+  #  wait;
 
 	echo "built deps"
    sleep 5
