@@ -23,7 +23,8 @@ sleep 3
 	 sudo apt-get purge tor* -y
 
    wait;
-
+   timeout 2 sudo id && sudo="Password was accepted" || sudo="Incorrect password, please rerun the script." && exit;
+   wait;
 	echo "Getting latest Tor..."
    sleep 3
 	echo "cool"
