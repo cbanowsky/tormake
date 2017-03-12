@@ -111,7 +111,8 @@ sleep 3;
 	  sleep 3
 	echo "cleaning up remaining files..."
     cd ..
-      rm -rf tor-0-2.9.10
+     sudo  rm -rf tor-0-2.9.10
+     sudo  rm -f tor-0-2.9.10.tar.gz
   wait;
 	echo "Cleanup done..."
 	 sleep 4
