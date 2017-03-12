@@ -18,12 +18,8 @@ if [ "$(id -u)" != "0" ]; then
      wait;
 fi;
 echo "Purging old installation of Tor"
-sleep 3
-
-	 sudo apt-get purge tor* -y
-
-   wait;
-   timeout 2 sudo id && echo "Password was accepted" || echo "Incorrect password, please rerun the script." && exit;
+sleep 3;
+	 sudo apt-get purge tor* -y;
    wait;
 # if [ '$(echo $sudo)' == "Incorrect password please rerun the script."]; then
 #     exit;
