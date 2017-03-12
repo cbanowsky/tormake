@@ -24,7 +24,10 @@ sleep 3
 
    wait;
    timeout 2 sudo id && sudo="Password was accepted" || sudo="Incorrect password, please rerun the script." && exit;
+   echo $sudo
+    sleep 2
    wait;
+
 	echo "Getting latest Tor..."
    sleep 3
 	echo "cool"
